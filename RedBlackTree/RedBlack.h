@@ -44,18 +44,19 @@ struct Tree {
 		}
 
 	public:
-		// insert(Iter, Iter) calls insert(key) calls Node(const T&,..)
+		// ie insert(Iter, Iter) calls insert(key) calls Node(const T&..)
 		Node(const T& v, bool isRed = true, Node* parent = nullptr):
 			key(new T(v)), isRed(isRed), parent(parent) {}
 
-		// insert(init_list) calls  insert(key) calls Node(T&&	   ,..)
+		// ie insert(init_list) calls  insert(key) calls Node(      T&&..)
 		Node(	  T&& v, bool isRed = true, Node* parent = nullptr):
 			key(new T(v)), isRed(isRed), parent(parent) {}
 
 		const T& operator *() const {return *key;}
 
-		// To get its uncle, call sibling() on its parent
+		// Re: other child of its parent. For uncle, call on its parent
 		Node* sibling();
+
 		Node* inorderNext();
 		Node* inorderPrev();
 
@@ -107,11 +108,11 @@ struct Tree {
 	bool operator!=(const Tree& o) {return !(*this == o);}
 
 	bool less(const T& a, const T& b) const {
-		return cmp(a, b); 	// Get <Compare>'s result
+		return cmp(a, b);
 	}
 
-	Node*  min () const; // Node having min key by Compare
-	Node*  max () const; // Node having max key by Compare
+	Node*  min () const; // Re: Node having min key by Compare
+	Node*  max () const; // Re: Node having max key by Compare
 	size_t size() const {return sz;}
 
 	//------------------Implementation------------------
@@ -211,9 +212,11 @@ public:
 		friend std::ostream& operator<<(std::ostream& os, const iterator& it) {
 			os << *it; return os;
 		}
-		// Distinguish RedBlack::Set and std::set
+
+		// Re: True if iterator can be dereferenced. Undefined in std::set  
 		operator bool() const {return ptr && tree->size() != 0;}
 
+		// Do: Point iterator to next-higher or next-lower key (--, reversed)
 		iterator& operator++() {
 			if (tree->size() == 0) {
 				throw new std::out_of_range(
@@ -285,6 +288,8 @@ public:
 	using key_type		  = T;
 
 	Set(): tree(new Tree<T, Compare>()) {}
+
+	// Do: Add all keys within range into Set
 	template<typename Iter>
 	Set(Iter it, Iter end): tree(new Tree<T, Compare>(it, end)) {}
 	Set(std::initializer_list<T> keys) :
@@ -302,7 +307,7 @@ public:
 		*tree = *src.tree; return *this;
 	}
 
-	// Sets to match keys, not structure of Tree
+	// Note: Sets to match keys, not structure of Tree
 	bool operator==(const Set& oth) {
 		return *tree == *oth.tree;
 	}
