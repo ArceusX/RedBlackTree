@@ -1,3 +1,4 @@
+
 # Features
 
 1. Implement Set, implement underlying RedBlack::Tree
@@ -27,14 +28,14 @@ iterator rend  ()
 ```
 size_t insert(Iter it, Iter end)       : Count of keys inserted
 size_t insert(initializer_list<T> keys): Count of keys inserted
-pair<iterator, bool> insert(T& key)
+pair<iterator, bool> insert(T& key)    : iterator to key
 pair<iterator, bool> emplace(Args&&...args)
 ```
 ```
 size_t erase(Iter it, Iter end)       : Count of keys erased
 size_t erase(initializer_list<T> keys): Count of keys erased
-pair<iterator, bool> erase(T& key)
-pair<iterator, bool> erase(Iter it)
+pair<iterator, bool> erase(T& key)    : iterator to next-higher key
+pair<iterator, bool> erase(Iter it)   : iterator to next-higher key
 ```
 ```
 void swap(Set& a, Set& b)
